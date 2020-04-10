@@ -31,14 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cBox_Type = new System.Windows.Forms.ComboBox();
+            this.cBox_SubDept = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cBox_Name = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -71,14 +71,14 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.99351F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.00649F));
-            this.tableLayoutPanel1.Controls.Add(this.comboBox3, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox2, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cBox_Type, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cBox_SubDept, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cBox_Name, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.button1, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.textBox1, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 1, 3);
@@ -96,21 +96,25 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(636, 417);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // comboBox3
+            // cBox_Type
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(140, 147);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(241, 39);
-            this.comboBox3.TabIndex = 12;
+            this.cBox_Type.FormattingEnabled = true;
+            this.cBox_Type.Items.AddRange(new object[] {
+            "Test",
+            "Project support",
+            "FEC Tour & Training"});
+            this.cBox_Type.Location = new System.Drawing.Point(140, 147);
+            this.cBox_Type.Name = "cBox_Type";
+            this.cBox_Type.Size = new System.Drawing.Size(241, 39);
+            this.cBox_Type.TabIndex = 12;
             // 
-            // comboBox2
+            // cBox_SubDept
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(140, 85);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(241, 39);
-            this.comboBox2.TabIndex = 8;
+            this.cBox_SubDept.FormattingEnabled = true;
+            this.cBox_SubDept.Location = new System.Drawing.Point(140, 85);
+            this.cBox_SubDept.Name = "cBox_SubDept";
+            this.cBox_SubDept.Size = new System.Drawing.Size(241, 39);
+            this.cBox_SubDept.TabIndex = 8;
             // 
             // label1
             // 
@@ -157,13 +161,14 @@
             this.label5.TabIndex = 4;
             this.label5.Text = "描述:";
             // 
-            // comboBox1
+            // cBox_Name
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(140, 23);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(241, 39);
-            this.comboBox1.TabIndex = 7;
+            this.cBox_Name.FormattingEnabled = true;
+            this.cBox_Name.Location = new System.Drawing.Point(140, 23);
+            this.cBox_Name.Name = "cBox_Name";
+            this.cBox_Name.Size = new System.Drawing.Size(241, 39);
+            this.cBox_Name.TabIndex = 7;
+            this.cBox_Name.SelectedIndexChanged += new System.EventHandler(this.cBox_Name_SelectedIndexChanged);
             // 
             // button1
             // 
@@ -257,6 +262,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FEC working hours Application Tool";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -284,10 +290,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton rBtn_pm;
         private System.Windows.Forms.RadioButton rBtn_am;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cBox_SubDept;
+        private System.Windows.Forms.ComboBox cBox_Name;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox cBox_Type;
         private System.Windows.Forms.TextBox textBox1;
     }
 }
