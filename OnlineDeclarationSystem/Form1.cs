@@ -182,5 +182,75 @@ namespace OnlineDeclarationSystem
             
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!Directory.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management"))
+            {
+                //网盘映射有问题
+            }
+            else
+            {
+                string str_aorp = "";
+                if (rBtn_am.Checked)
+                {
+                    str_aorp = "上午";
+                }
+                else if (rBtn_pm.Checked)
+                {
+                    str_aorp = "下午";
+                }
+                writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToShortDateString() +" "+ str_aorp, 
+                    cBox_Type.SelectedItem.ToString(), textBox1.Text);
+                //if (!File.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx"))
+                //{
+                //    File.Create(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx");
+                //}
+            }
+        }
+
+        public bool writeCSV(string filename,string str_date, string str_type, string str_desc)
+        {
+            bool b_result = false;
+            string line = string.Empty;
+            const string LOG_DIR = @"Q:\CNGrp095\FEC&I\Working Hours Management";
+            string csvFilePath = Path.Combine(LOG_DIR, filename + ".csv");
+
+            if (!File.Exists(csvFilePath))
+            {
+                //写入表头
+                using (StreamWriter csvFile = new StreamWriter(csvFilePath, true, Encoding.UTF8))
+                {
+                    line = "Date,Type,Desc,Time(h:m:s)";
+                    csvFile.WriteLine(line);
+                }
+            }
+            else
+            {
+                //查重复申报
+                string strValue = string.Empty;
+                using (StreamReader read = new StreamReader(csvFilePath, true))
+                {
+                    do
+                    {
+                        strValue = read.ReadLine();
+                        if (strValue!=null)
+                        {
+                            if (strValue.Split(',')[0]==str_date)
+                            {
+                                MessageBox.Show("已存在该时段的预约，取消或覆盖");
+
+                            }
+                        }
+                    } while (strValue != null);
+                }
+            }
+            using (StreamWriter csvFile = new StreamWriter(csvFilePath, true, Encoding.UTF8))
+            {
+                line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G");
+                csvFile.WriteLine(line);
+            }          
+            return b_result;
+        }
     }
 }
