@@ -34,6 +34,34 @@ namespace OnlineDeclarationSystem
             cBox_SubDept.DataSource = ItemList2StringArray(dt_SubDept);
             cBox_Name.SelectedIndex = -1;
             cBox_SubDept.SelectedIndex = -1;
+            dateTimePicker1.Value = DateTime.Today;
+            dateTimePicker1.MinDate = new DateTime(DateTime.Today.Year, 1, 1);
+            switch (DateTime.Today.DayOfWeek)
+            {
+                case DayOfWeek.Friday:
+                    dateTimePicker1.MaxDate = DateTime.Today.AddDays(9);
+                    break;
+                case DayOfWeek.Monday:
+                    dateTimePicker1.MaxDate = DateTime.Today.AddDays(13);
+                    break;
+                case DayOfWeek.Saturday:
+                    dateTimePicker1.MaxDate = DateTime.Today.AddDays(8);
+                    break;
+                case DayOfWeek.Sunday:
+                    dateTimePicker1.MaxDate = DateTime.Today.AddDays(7);
+                    break;
+                case DayOfWeek.Thursday:
+                    dateTimePicker1.MaxDate = DateTime.Today.AddDays(10);
+                    break;
+                case DayOfWeek.Tuesday:
+                    dateTimePicker1.MaxDate = DateTime.Today.AddDays(12);
+                    break;
+                case DayOfWeek.Wednesday:
+                    dateTimePicker1.MaxDate = DateTime.Today.AddDays(11);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -212,6 +240,9 @@ namespace OnlineDeclarationSystem
         public bool writeCSV(string filename,string str_date, string str_type, string str_desc)
         {
             bool b_result = false;
+            bool b_write = true;
+            bool b_delete = false;
+            string vText = "";
             string line = string.Empty;
             const string LOG_DIR = @"Q:\CNGrp095\FEC&I\Working Hours Management";
             string csvFilePath = Path.Combine(LOG_DIR, filename + ".csv");
@@ -221,7 +252,7 @@ namespace OnlineDeclarationSystem
                 //写入表头
                 using (StreamWriter csvFile = new StreamWriter(csvFilePath, true, Encoding.UTF8))
                 {
-                    line = "Date,Type,Desc,Time(h:m:s)";
+                    line = "申请时间,类型,描述,提交时间";
                     csvFile.WriteLine(line);
                 }
             }
@@ -229,6 +260,7 @@ namespace OnlineDeclarationSystem
             {
                 //查重复申报
                 string strValue = string.Empty;
+                
                 using (StreamReader read = new StreamReader(csvFilePath, true))
                 {
                     do
@@ -238,18 +270,41 @@ namespace OnlineDeclarationSystem
                         {
                             if (strValue.Split(',')[0]==str_date)
                             {
-                                MessageBox.Show("已存在该时段的预约，取消或覆盖");
-
+                                if (MessageBox.Show("已存在该时段的预约，取消或覆盖", "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK) 
+                                {
+                                    
+                                    b_write = true;
+                                    b_delete = true;
+                                    strValue = "";
+                                }
+                                else
+                                {
+                                    b_write = false;
+                                }
                             }
+                            if (strValue != "")
+                            {
+                                vText += strValue + "\r\n";
+                            }                           
+
                         }
                     } while (strValue != null);
                 }
             }
-            using (StreamWriter csvFile = new StreamWriter(csvFilePath, true, Encoding.UTF8))
+            if (b_delete)
             {
-                line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G");
-                csvFile.WriteLine(line);
-            }          
+                StreamWriter vStreamWriter = new StreamWriter(csvFilePath, false, Encoding.UTF8);
+                vStreamWriter.Write(vText);
+                vStreamWriter.Close();
+            }
+            if (b_write)
+            {
+                using (StreamWriter csvFile = new StreamWriter(csvFilePath, true, Encoding.UTF8))
+                {
+                    line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G");
+                    csvFile.WriteLine(line);
+                }
+            }
             return b_result;
         }
     }
