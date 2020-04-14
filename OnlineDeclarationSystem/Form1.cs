@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Data.OleDb;
+using System.Reflection;
 
 namespace OnlineDeclarationSystem
 {
@@ -22,6 +23,7 @@ namespace OnlineDeclarationSystem
         List<StaffInfo> StaffList = new List<StaffInfo>();
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Text = this.Text + "   V" + Assembly.GetExecutingAssembly().GetName().Version + "";
             DataSet_StaffList = ExcelToDataSet("FEC Working Hour for CTO DE.xlsx");
             DataTable dt_Name = DataSet_StaffList.Tables[0].DefaultView.ToTable(true, "Name");
             cBox_Name.DataSource = ItemList2StringArray(dt_Name);
@@ -220,16 +222,31 @@ namespace OnlineDeclarationSystem
             else
             {
                 string str_aorp = "";
-                if (rBtn_am.Checked)
+                if (checkBox1.Checked && checkBox2.Checked)
+                {
+                    str_aorp = "上午&下午";
+                }
+                else if (checkBox1.Checked && !checkBox2.Checked)
                 {
                     str_aorp = "上午";
                 }
-                else if (rBtn_pm.Checked)
+                else if (!checkBox1.Checked && checkBox2.Checked)
                 {
                     str_aorp = "下午";
                 }
-                writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToShortDateString() +" "+ str_aorp, 
-                    cBox_Type.SelectedItem.ToString(), textBox1.Text);
+                else
+                {
+                    MessageBox.Show("请选择具体时段~");    
+                }
+                if (str_aorp != "")
+                {
+                    if (writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToShortDateString() + " " + str_aorp,
+    cBox_Type.SelectedItem.ToString(), textBox1.Text))
+                    {
+                        MessageBox.Show("提交成功！");    
+                    } 
+
+                }
                 //if (!File.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx"))
                 //{
                 //    File.Create(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx");
@@ -252,7 +269,7 @@ namespace OnlineDeclarationSystem
                 //写入表头
                 using (StreamWriter csvFile = new StreamWriter(csvFilePath, true, Encoding.UTF8))
                 {
-                    line = "申请时间,类型,描述,提交时间";
+                    line = "申请时间,类型,描述,提交时间,工时";
                     csvFile.WriteLine(line);
                 }
             }
@@ -260,7 +277,7 @@ namespace OnlineDeclarationSystem
             {
                 //查重复申报
                 string strValue = string.Empty;
-                
+                bool b_recordExist = false;
                 using (StreamReader read = new StreamReader(csvFilePath, true))
                 {
                     do
@@ -268,19 +285,33 @@ namespace OnlineDeclarationSystem
                         strValue = read.ReadLine();
                         if (strValue!=null)
                         {
-                            if (strValue.Split(',')[0]==str_date)
+                            if (strValue.Split(',')[0].Split(' ')[0] == str_date.Split(' ')[0])
                             {
-                                if (MessageBox.Show("已存在该时段的预约，取消或覆盖", "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK) 
+                                if (strValue.Split(',')[0].Split(' ')[1] == "上午&下午" || str_date.Split(' ')[1] == "上午&下午")
                                 {
-                                    
-                                    b_write = true;
-                                    b_delete = true;
-                                    strValue = "";
+                                    b_recordExist = true;
                                 }
                                 else
                                 {
-                                    b_write = false;
+                                    if (strValue.Split(',')[0].Split(' ')[1] == str_date.Split(' ')[1])
+                                    {
+                                        b_recordExist = true;
+                                    }
                                 }
+                                if (b_recordExist)
+                                {
+                                    if (MessageBox.Show("已存在该时段的预约，取消或覆盖", "确认", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                                    {
+
+                                        b_write = true;
+                                        b_delete = true;
+                                        strValue = "";
+                                    }
+                                    else
+                                    {
+                                        b_write = false;
+                                    }
+                                }                                
                             }
                             if (strValue != "")
                             {
@@ -301,9 +332,17 @@ namespace OnlineDeclarationSystem
             {
                 using (StreamWriter csvFile = new StreamWriter(csvFilePath, true, Encoding.UTF8))
                 {
-                    line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G");
+                    if (str_date.Split(' ')[1] == "上午&下午")
+                    {
+                        line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G") + ",8";
+                    }
+                    else
+                    {
+                        line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G") + ",4";
+                    }
                     csvFile.WriteLine(line);
                 }
+                b_result = true;
             }
             return b_result;
         }

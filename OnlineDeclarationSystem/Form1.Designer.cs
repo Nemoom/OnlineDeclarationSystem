@@ -44,8 +44,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.rBtn_pm = new System.Windows.Forms.RadioButton();
-            this.rBtn_am = new System.Windows.Forms.RadioButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -100,9 +100,9 @@
             // 
             this.cBox_Type.FormattingEnabled = true;
             this.cBox_Type.Items.AddRange(new object[] {
-            "Test",
-            "Project support",
-            "FEC Tour & Training"});
+            "测试",
+            "项目支持",
+            "FEC参观讲解和培训"});
             this.cBox_Type.Location = new System.Drawing.Point(140, 147);
             this.cBox_Type.Name = "cBox_Type";
             this.cBox_Type.Size = new System.Drawing.Size(241, 39);
@@ -218,37 +218,35 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.rBtn_pm);
-            this.panel1.Controls.Add(this.rBtn_am);
+            this.panel1.Controls.Add(this.checkBox2);
+            this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(203, 38);
             this.panel1.TabIndex = 2;
             // 
-            // rBtn_pm
+            // checkBox1
             // 
-            this.rBtn_pm.AutoSize = true;
-            this.rBtn_pm.Dock = System.Windows.Forms.DockStyle.Left;
-            this.rBtn_pm.Location = new System.Drawing.Point(107, 0);
-            this.rBtn_pm.Name = "rBtn_pm";
-            this.rBtn_pm.Size = new System.Drawing.Size(91, 38);
-            this.rBtn_pm.TabIndex = 0;
-            this.rBtn_pm.Text = "下午";
-            this.rBtn_pm.UseVisualStyleBackColor = true;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.checkBox1.Location = new System.Drawing.Point(0, 0);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.checkBox1.Size = new System.Drawing.Size(108, 38);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "上午";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // rBtn_am
+            // checkBox2
             // 
-            this.rBtn_am.Checked = true;
-            this.rBtn_am.Dock = System.Windows.Forms.DockStyle.Left;
-            this.rBtn_am.Location = new System.Drawing.Point(0, 0);
-            this.rBtn_am.Name = "rBtn_am";
-            this.rBtn_am.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.rBtn_am.Size = new System.Drawing.Size(107, 38);
-            this.rBtn_am.TabIndex = 1;
-            this.rBtn_am.TabStop = true;
-            this.rBtn_am.Text = "上午";
-            this.rBtn_am.UseVisualStyleBackColor = true;
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.checkBox2.Location = new System.Drawing.Point(108, 0);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(92, 38);
+            this.checkBox2.TabIndex = 1;
+            this.checkBox2.Text = "下午";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -289,13 +287,13 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RadioButton rBtn_pm;
-        private System.Windows.Forms.RadioButton rBtn_am;
         private System.Windows.Forms.ComboBox cBox_SubDept;
         private System.Windows.Forms.ComboBox cBox_Name;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox cBox_Type;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 
