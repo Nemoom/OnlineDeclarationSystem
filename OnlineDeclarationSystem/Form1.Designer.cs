@@ -44,8 +44,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -226,17 +226,6 @@
             this.panel1.Size = new System.Drawing.Size(203, 38);
             this.panel1.TabIndex = 2;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.checkBox1.Location = new System.Drawing.Point(0, 0);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.checkBox1.Size = new System.Drawing.Size(108, 38);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "上午";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
@@ -247,6 +236,17 @@
             this.checkBox2.TabIndex = 1;
             this.checkBox2.Text = "下午";
             this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.checkBox1.Location = new System.Drawing.Point(0, 0);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.checkBox1.Size = new System.Drawing.Size(108, 38);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "上午";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

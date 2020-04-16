@@ -241,7 +241,7 @@ namespace OnlineDeclarationSystem
                 if (str_aorp != "")
                 {
                     if (writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToShortDateString() + " " + str_aorp,
-    cBox_Type.SelectedItem.ToString(), textBox1.Text))
+    cBox_Type.SelectedItem.ToString(), "\""+textBox1.Text.Replace('"',' ')+"\""))
                     {
                         MessageBox.Show("提交成功！");    
                     } 
