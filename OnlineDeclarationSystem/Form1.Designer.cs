@@ -102,6 +102,7 @@
             this.cBox_Type.Items.AddRange(new object[] {
             "测试",
             "项目支持",
+            "FEC设备维护",
             "FEC参观讲解和培训"});
             this.cBox_Type.Location = new System.Drawing.Point(140, 147);
             this.cBox_Type.Name = "cBox_Type";
