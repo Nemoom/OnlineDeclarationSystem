@@ -225,50 +225,59 @@ namespace OnlineDeclarationSystem
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management"))
+            try
             {
-                //网盘映射有问题
-                logger.Error("网盘映射有问题");
-            }
-            else
-            {
-                string str_aorp = "";
-                if (checkBox1.Checked && checkBox2.Checked)
+                if (!Directory.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management"))
                 {
-                    str_aorp = "上午&下午";
-                }
-                else if (checkBox1.Checked && !checkBox2.Checked)
-                {
-                    str_aorp = "上午";
-                }
-                else if (!checkBox1.Checked && checkBox2.Checked)
-                {
-                    str_aorp = "下午";
+                    //网盘映射有问题
+                    logger.Error("网盘映射有问题");
                 }
                 else
                 {
-                    MessageBox.Show("请选择具体时段~");    
-                }
-                if (str_aorp != "")
-                {
-                    try
+                    string str_aorp = "";
+                    if (checkBox1.Checked && checkBox2.Checked)
                     {
-                        if (writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd") + " " + str_aorp,
-                    cBox_Type.SelectedItem.ToString(), "\"" + textBox1.Text.Replace('"', ' ') + "\""))
+                        str_aorp = "上午&下午";
+                    }
+                    else if (checkBox1.Checked && !checkBox2.Checked)
+                    {
+                        str_aorp = "上午";
+                    }
+                    else if (!checkBox1.Checked && checkBox2.Checked)
+                    {
+                        str_aorp = "下午";
+                    }
+                    else
+                    {
+                        MessageBox.Show("请选择具体时段~");
+                    }
+                    if (str_aorp != "")
+                    {
+                        try
                         {
-                            MessageBox.Show("提交成功！");
+                            if (writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd") + " " + str_aorp,
+                        cBox_Type.SelectedItem.ToString(), "\"" + textBox1.Text.Replace('"', ' ') + "\""))
+                            {
+                                MessageBox.Show("提交成功！");
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Fatal(ex.Message);
-                    }
+                        catch (Exception ex)
+                        {
+                            logger.Fatal(ex.Message);
+                            MessageBox.Show(ex.StackTrace,"Exception");
+                        }
 
+                    }
+                    //if (!File.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx"))
+                    //{
+                    //    File.Create(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx");
+                    //}
                 }
-                //if (!File.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx"))
-                //{
-                //    File.Create(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx");
-                //}
+            }
+            catch (Exception ex2)
+            {
+                logger.Fatal(ex2.Message);
+                MessageBox.Show(ex2.StackTrace,"Exception");
             }
         }
 
