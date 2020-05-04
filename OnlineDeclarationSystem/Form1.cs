@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Data.OleDb;
 using System.Reflection;
+using log4net.Config;
+using log4net;
 
 namespace OnlineDeclarationSystem
 {
@@ -18,6 +20,13 @@ namespace OnlineDeclarationSystem
         {
             InitializeComponent();
         }
+        private static void InitLog4Net()
+        {
+            var logCfg = new FileInfo(AppDomain.CurrentDomain.BaseDirectory + "log4net.config");
+            XmlConfigurator.ConfigureAndWatch(logCfg);
+        }
+
+        public ILog logger;
         struct StaffInfo { public string name; public string subDept;}
         DataSet DataSet_StaffList = new DataSet();
         List<StaffInfo> StaffList = new List<StaffInfo>();
@@ -64,6 +73,7 @@ namespace OnlineDeclarationSystem
                 default:
                     break;
             }
+            logger = LogManager.GetLogger(typeof(Program));
         }
 
         /// <summary>
@@ -218,6 +228,7 @@ namespace OnlineDeclarationSystem
             if (!Directory.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management"))
             {
                 //网盘映射有问题
+                logger.Error("网盘映射有问题");
             }
             else
             {
@@ -240,11 +251,18 @@ namespace OnlineDeclarationSystem
                 }
                 if (str_aorp != "")
                 {
-                    if (writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToShortDateString() + " " + str_aorp,
-    cBox_Type.SelectedItem.ToString(), "\""+textBox1.Text.Replace('"',' ')+"\""))
+                    try
                     {
-                        MessageBox.Show("提交成功！");    
-                    } 
+                        if (writeCSV(cBox_SubDept.SelectedValue.ToString().Split('-')[cBox_SubDept.SelectedValue.ToString().Split('-').Length - 1] + "-" + cBox_Name.SelectedValue.ToString(), dateTimePicker1.Value.ToString("yyyyMMdd") + " " + str_aorp,
+                    cBox_Type.SelectedItem.ToString(), "\"" + textBox1.Text.Replace('"', ' ') + "\""))
+                        {
+                            MessageBox.Show("提交成功！");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Fatal(ex.Message);
+                    }
 
                 }
                 //if (!File.Exists(@"Q:\CNGrp095\FEC&I\Working Hours Management\" + cBox_Name.SelectedValue.ToString() + ".xlsx"))
@@ -334,11 +352,11 @@ namespace OnlineDeclarationSystem
                 {
                     if (str_date.Split(' ')[1] == "上午&下午")
                     {
-                        line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G") + ",8";
+                        line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + ",8";
                     }
                     else
                     {
-                        line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("G") + ",4";
+                        line = str_date + "," + str_type + "," + str_desc + "," + DateTime.Now.ToString("yyyyMMdd HH:mm:ss") + ",4";
                     }
                     csvFile.WriteLine(line);
                 }
