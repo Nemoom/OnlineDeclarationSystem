@@ -33,16 +33,39 @@ namespace OnlineDeclarationSystem
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Text = this.Text + "   V" + Assembly.GetExecutingAssembly().GetName().Version + "";
-            DataSet_StaffList = ExcelToDataSet("FEC Working Hour for CTO DE.xlsx");
-            DataTable dt_Name = DataSet_StaffList.Tables[0].DefaultView.ToTable(true, "Name");
-            cBox_Name.DataSource = ItemList2StringArray(dt_Name);
-            for (int i = 0; i < DataSet_StaffList.Tables[0].Rows.Count; i++)
+
+            //DataSet_StaffList = ExcelToDataSet("FEC Working Hour for CTO DE.xlsx");
+            //DataTable dt_Name = DataSet_StaffList.Tables[0].DefaultView.ToTable(true, "Name");
+            //for (int i = 0; i < DataSet_StaffList.Tables[0].Rows.Count; i++)
+            //{
+            //    StaffList.Add(new StaffInfo { name = DataSet_StaffList.Tables[0].Rows[i][1].ToString(), 
+            //        subDept = DataSet_StaffList.Tables[0].Rows[i][3].ToString() });
+            //}
+            //DataTable dt_SubDept = DataSet_StaffList.Tables[0].DefaultView.ToTable(true, "Sub-department");
+            //cBox_Name.DataSource = ItemList2StringArray(dt_Name);
+            //cBox_SubDept.DataSource = ItemList2StringArray(dt_SubDept);
+
+            using (StreamReader sReader = new StreamReader("FEC Working Hour for CTO DE.csv"))
             {
-                StaffList.Add(new StaffInfo { name = DataSet_StaffList.Tables[0].Rows[i][1].ToString(), 
-                    subDept = DataSet_StaffList.Tables[0].Rows[i][3].ToString() });
+                while (sReader.Peek() >= 0)
+                {
+                     string mStr = sReader.ReadLine();
+                     if (!mStr.StartsWith("No"))
+                     {
+                         string[] Array_mStr = mStr.Split(',');
+                         try
+                         {
+                             StaffList.Add(new StaffInfo { name = Array_mStr[1], subDept = Array_mStr[4] });
+                         }
+                         catch (Exception)
+                         {
+                             
+                         }
+                     }
+                }
             }
-            DataTable dt_SubDept = DataSet_StaffList.Tables[0].DefaultView.ToTable(true, "Sub-department");
-            cBox_SubDept.DataSource = ItemList2StringArray(dt_SubDept);
+            cBox_Name.DataSource = ItemList2StringArray("0");
+            cBox_SubDept.DataSource = ItemList2StringArray("1");
             cBox_Name.SelectedIndex = -1;
             cBox_SubDept.SelectedIndex = -1;
             dateTimePicker1.Value = DateTime.Today;
@@ -165,6 +188,30 @@ namespace OnlineDeclarationSystem
             {
                 arrayString[i] = (string)mItemList.Rows[i].ItemArray[0];
             }
+            return arrayString;
+        }
+
+        public string[] ItemList2StringArray(string colName)
+        {
+            string[] arrayString = new string[StaffList.Count];
+            switch (colName)
+            {
+                case "0":
+                    for (int i = 0; i < StaffList.Count; i++)
+                    {
+                        arrayString[i] = StaffList[i].name;
+                    }
+                    break;
+                case "1":
+                    for (int i = 0; i < StaffList.Count; i++)
+                    {
+                        arrayString[i] = StaffList[i].subDept;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            
             return arrayString;
         }
 
